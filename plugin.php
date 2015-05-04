@@ -3,7 +3,7 @@
 /**
  * Plugin Name: WP REST API Custom Fields
  * Description: Adds Advanced Custom Fields to WP REST API JSON output.
- * Version: 0.1
+ * Version: 0.2
  * Author: André Boekhorst (based on work from @panman)
  * Author URI: http://www.andreboekhorst.nl
  * Plugin URI: https://github.com/andreboekhorst/wp-api-custom-fields/

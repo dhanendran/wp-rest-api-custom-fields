@@ -20,7 +20,7 @@ function addACFmeta( $_post ){
 		return $data;
 	}
 
-    $ACF = get_fields( $_post['ID'] );
+    $ACF = (array) get_fields( $_post['ID'] );
     foreach( $ACF as $key => &$custom_field ){
         $custom_field = apply_filters( 'JSON_META_' . $key, $custom_field, $_post );
     }

@@ -11,62 +11,58 @@
 
 
 // Add Meta Fields to Posts and Pages
-add_filter( 'json_prepare_post', 'addACFmeta' ); 
-add_filter( 'json_prepare_page', 'addACFmeta' ); 
+add_filter( 'json_prepare_post', 'addACFmeta' );
+add_filter( 'json_prepare_page', 'addACFmeta' );
 
-function addACFmeta( $_post ){
+function addACFmeta( $_post ) {
 
-	if( ! function_exists('get_fields') ){
-		return $data;
+	if ( ! function_exists( 'get_fields' ) ) {
+		return $_post;
 	}
 
-    $ACF = (array) get_fields( $_post['ID'] );
-    foreach( $ACF as $key => &$custom_field ){
-        $custom_field = apply_filters( 'JSON_META_' . $key, $custom_field, $_post );
-    }
-    $_post['meta'] = array_merge( $_post['meta'], $ACF );    
-    
-    return $_post;
+	$ACF = (array) get_fields( $_post['ID'] );
+	foreach ( $ACF as $key => &$custom_field ) {
+		$custom_field = apply_filters( 'JSON_META_' . $key, $custom_field, $_post );
+	}
+	$_post['meta'] = array_merge( $_post['meta'], $ACF );
 
+	return $_post;
 }
 
 
 // Add Meta Fields to Taxonomy
-add_filter('json_prepare_term', 'wp_api_encode_acf_taxonomy', 10, 2);
+add_filter( 'json_prepare_term', 'wp_api_encode_acf_taxonomy', 10, 2 );
 
-function wp_api_encode_acf_taxonomy($data,$post){
+function wp_api_encode_acf_taxonomy( $data, $post ) {
 
-	if( ! function_exists('get_fields') ){
+	if ( ! function_exists( 'get_fields' ) ) {
 		return $data;
 	}
 
-    $ACF = (array) get_fields($post->taxonomy."_". $post->term_id );
+	$ACF = (array) get_fields( $post->taxonomy . '_' . $post->term_id );
 
-    foreach( $ACF as $key => &$custom_field ){
-        $custom_field = apply_filters( 'JSON_META_' . $key, $custom_field, $post );
-    }
-    
-    $data['meta'] = array_merge($data['meta'], $ACF );
+	foreach ( $ACF as $key => &$custom_field ) {
+		$custom_field = apply_filters( 'JSON_META_' . $key, $custom_field, $post );
+	}
 
-    return $data;
+	$data['meta'] = array_merge( $data['meta'], $ACF );
+
+	return $data;
 
 }
 
 
 // Add meta fields to user.
-add_filter('json_prepare_user', 'wp_api_encode_acf_user', 10, 2);
+add_filter( 'json_prepare_user', 'wp_api_encode_acf_user', 10, 2 );
 
-function wp_api_encode_acf_user($data,$post){
-	
-	if( ! function_exists('get_fields') ){
+function wp_api_encode_acf_user( $data, $post ) {
+
+	if ( ! function_exists( 'get_fields' ) ) {
 		return $data;
 	}
 
-    $customMeta = (array) get_fields("user_". $data['ID']);
-    $data['meta'] = array_merge($data['meta'], $customMeta );
+	$customMeta = (array) get_fields( 'user_' . $data['ID'] );
+	$data['meta'] = array_merge( $data['meta'], $customMeta );
 
-    return $data;
-
+	return $data;
 }
-
-
